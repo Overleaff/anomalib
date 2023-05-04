@@ -8,6 +8,7 @@ from __future__ import annotations
 import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
+import numpy as np
 
 
 class STFPMLoss(nn.Module):
@@ -49,8 +50,18 @@ class STFPMLoss(nn.Module):
 
         norm_teacher_features = F.normalize(teacher_feats)
         norm_student_features = F.normalize(student_feats)
-        layer_loss = (0.5 / (width * height)) * self.mse_loss(norm_teacher_features, norm_student_features)
+        # layer_loss = (0.5 / (width * height)) * self.mse_loss(norm_teacher_features, norm_student_features)
+                # Compute the squared difference between normal_t_out and s_pdn_out for each tuple (c, w, h) as DST c,w,h = (Yˆc,w,h − YSTc,w,h)2
+        distance_s_t = torch.pow(norm_teacher_features-norm_student_features,2)
+        # pdb.set_trace()
+        # Compute the 0.999-quantile of the elements of DST, denoted by dhard
+        # dhard = torch.quantile(distance_s_t,0.999)
+        dhard = np.percentile(distance_s_t.detach().cpu().numpy(), 99.9)
+        # Compute the loss Lhard as the mean of all DST c,w,h ≥ dhard
+        hard_data = distance_s_t[distance_s_t>=dhard]
 
+        # pdb.set_trace() 
+        layer_loss = torch.mean(hard_data)
         return layer_loss
 
     def forward(self, teacher_features: dict[str, Tensor], student_features: dict[str, Tensor]) -> Tensor:
