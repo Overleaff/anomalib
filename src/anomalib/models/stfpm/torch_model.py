@@ -11,7 +11,7 @@ import torch
 from anomalib.models.components import FeatureExtractor
 from anomalib.models.stfpm.anomaly_map import AnomalyMapGenerator
 from anomalib.pre_processing import Tiler
-from imagenet import ImageNetDataset
+from anomalib.models.stfpm.imagenet import ImageNetDataset
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from itertools import cycle
