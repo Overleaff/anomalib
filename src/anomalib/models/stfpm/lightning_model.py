@@ -18,6 +18,7 @@ from anomalib.models.components import AnomalyModule
 from anomalib.models.stfpm.loss import STFPMLoss
 from anomalib.models.stfpm.torch_model import STFPMModel
 
+
 __all__ = ["StfpmLightning"]
 
 
@@ -59,8 +60,8 @@ class Stfpm(AnomalyModule):
         del args, kwargs  # These variables are not used.
 
         self.model.teacher_model.eval()
-        teacher_features, student_features = self.model.forward(batch["image"])
-        loss = self.loss(teacher_features, student_features)
+        teacher_features, student_features, s_imagenet_out = self.model.forward(batch["image"])
+        loss = self.loss(teacher_features, student_features, s_imagenet_out)
         self.log("train_loss", loss.item(), on_epoch=True, prog_bar=True, logger=True)
         return {"loss": loss}
 

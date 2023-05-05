@@ -35,7 +35,7 @@ class STFPMLoss(nn.Module):
         super().__init__()
         self.mse_loss = nn.MSELoss(reduction="sum")
 
-    def compute_layer_loss(self, teacher_feats: Tensor, student_feats: Tensor) -> Tensor:
+    def compute_layer_loss(self, teacher_feats: Tensor, student_feats: Tensor, s_imagenet_out: Tensor) -> Tensor:
         """Compute layer loss based on Equation (1) in Section 3.2 of the paper.
 
         Args:
@@ -59,12 +59,17 @@ class STFPMLoss(nn.Module):
         dhard = np.percentile(distance_s_t.detach().cpu().numpy(), 99.9)
         # Compute the loss Lhard as the mean of all DST c,w,h ≥ dhard
         hard_data = distance_s_t[distance_s_t>=dhard]
+        
+        # Compute the loss LST = Lhard + (384 · 64 · 64)−1 P 384 c=1 k S(P)ck 2 F
+        N : dict[str, float]= torch.mean(torch.pow(s_imagenet_out,2))
+        # print('loss Lhard {}, loss N {}'.format(Lhard,N))
 
         # pdb.set_trace() 
-        layer_loss = torch.mean(hard_data)
+        layer_loss = torch.mean(hard_data) + N
+        
         return layer_loss
 
-    def forward(self, teacher_features: dict[str, Tensor], student_features: dict[str, Tensor]) -> Tensor:
+    def forward(self, teacher_features: dict[str, Tensor], student_features: dict[str, Tensor], imagenet_params: dict[str, float]) -> Tensor:
         """Compute the overall loss via the weighted average of the layer losses computed by the cosine similarity.
 
         Args:
@@ -77,7 +82,7 @@ class STFPMLoss(nn.Module):
 
         layer_losses: list[Tensor] = []
         for layer in teacher_features.keys():
-            loss = self.compute_layer_loss(teacher_features[layer], student_features[layer])
+            loss = self.compute_layer_loss(teacher_features[layer], student_features[layer], imagenet_params[layer])
             layer_losses.append(loss)
 
         total_loss = torch.stack(layer_losses).sum()
