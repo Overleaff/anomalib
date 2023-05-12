@@ -10,7 +10,6 @@ from torch import Tensor, nn
 from anomalib.models.components import FeatureExtractor
 from anomalib.models.stfpm.anomaly_map import AnomalyMapGenerator
 from anomalib.pre_processing import Tiler
-from transformers import ViTFeatureExtractor
 
 
 class STFPMModel(nn.Module):
