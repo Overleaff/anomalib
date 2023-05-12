@@ -23,7 +23,6 @@ class STFPMModel(nn.Module):
 
     def __init__(
         self,
-        layers: list[str],
         input_size: tuple[int, int],
         backbone: str = "vit_base_patch16_224.augreg2_in21k_ft_in1k",
     ) -> None:

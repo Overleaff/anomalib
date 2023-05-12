@@ -34,14 +34,12 @@ class Stfpm(AnomalyModule):
         self,
         input_size: tuple[int, int],
         backbone: str,
-        layers: list[str],
     ) -> None:
         super().__init__()
 
         self.model = STFPMModel(
             input_size=input_size,
             backbone=backbone,
-            layers=layers,
         )
         self.loss = STFPMLoss()
 
