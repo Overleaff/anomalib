@@ -37,7 +37,7 @@ class AnomalyMapGenerator(nn.Module):
         return layer_map
 
     def compute_anomaly_map(
-        self, teacher_features: dict[str, Tensor], student_features: dict[str, Tensor]
+        self, teacher_features:  Tensor, student_features:  Tensor
     ) -> torch.Tensor:
         """Compute the overall anomaly map via element-wise production the interpolated anomaly maps.
 
@@ -50,14 +50,14 @@ class AnomalyMapGenerator(nn.Module):
         """
         batch_size = list(teacher_features.values())[0].shape[0]
         anomaly_map = torch.ones(batch_size, 1, self.image_size[0], self.image_size[1])
-        for layer in teacher_features.keys():
-            layer_map = self.compute_layer_map(teacher_features[layer], student_features[layer])
-            anomaly_map = anomaly_map.to(layer_map.device)
-            anomaly_map *= layer_map
+
+        layer_map = self.compute_layer_map(teacher_features, student_features)
+        anomaly_map = anomaly_map.to(layer_map.device)
+        anomaly_map *= layer_map
 
         return anomaly_map
 
-    def forward(self, **kwargs: dict[str, Tensor]) -> torch.Tensor:
+    def forward(self, **kwargs:  Tensor) -> torch.Tensor:
         """Returns anomaly map.
 
         Expects `teach_features` and `student_features` keywords to be passed explicitly.
@@ -79,7 +79,7 @@ class AnomalyMapGenerator(nn.Module):
         if not ("teacher_features" in kwargs and "student_features" in kwargs):
             raise ValueError(f"Expected keys `teacher_features` and `student_features. Found {kwargs.keys()}")
 
-        teacher_features: dict[str, Tensor] = kwargs["teacher_features"]
-        student_features: dict[str, Tensor] = kwargs["student_features"]
+        teacher_features:  Tensor = kwargs["teacher_features"]
+        student_features: Tensor = kwargs["student_features"]
 
         return self.compute_anomaly_map(teacher_features, student_features)

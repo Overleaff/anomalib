@@ -53,7 +53,7 @@ class STFPMLoss(nn.Module):
 
         return layer_loss
 
-    def forward(self, teacher_features: dict[str, Tensor], student_features: dict[str, Tensor]) -> Tensor:
+    def forward(self, teacher_features:  Tensor, student_features:  Tensor) -> Tensor:
         """Compute the overall loss via the weighted average of the layer losses computed by the cosine similarity.
 
         Args:
@@ -64,11 +64,9 @@ class STFPMLoss(nn.Module):
           Total loss, which is the weighted average of the layer losses.
         """
 
-        layer_losses: list[Tensor] = []
-        for layer in teacher_features.keys():
-            loss = self.compute_layer_loss(teacher_features[layer], student_features[layer])
-            layer_losses.append(loss)
 
-        total_loss = torch.stack(layer_losses).sum()
+        loss = self.compute_layer_loss(teacher_features, student_features)
 
-        return total_loss
+
+
+        return loss

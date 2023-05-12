@@ -10,6 +10,7 @@ from torch import Tensor, nn
 from anomalib.models.components import FeatureExtractor
 from anomalib.models.stfpm.anomaly_map import AnomalyMapGenerator
 from anomalib.pre_processing import Tiler
+from transformers import ViTFeatureExtractor
 
 
 class STFPMModel(nn.Module):
@@ -25,15 +26,15 @@ class STFPMModel(nn.Module):
         self,
         layers: list[str],
         input_size: tuple[int, int],
-        backbone: str = "resnet18",
+        backbone: str = "vit_base_patch16_224.augreg2_in21k_ft_in1k",
     ) -> None:
         super().__init__()
         self.tiler: Tiler | None = None
 
         self.backbone = backbone
-        self.teacher_model = FeatureExtractor(backbone=self.backbone, pre_trained=True, layers=layers)
+        self.teacher_model = FeatureExtractor(backbone=self.backbone, pre_trained=True,num_classes=0,)
         self.student_model = FeatureExtractor(
-            backbone=self.backbone, pre_trained=False, layers=layers, requires_grad=True
+            backbone=self.backbone, pre_trained=False, requires_grad=True,num_classes=0,
         )
 
         # teacher model is fixed
@@ -62,8 +63,8 @@ class STFPMModel(nn.Module):
         """
         if self.tiler:
             images = self.tiler.tile(images)
-        teacher_features: dict[str, Tensor] = self.teacher_model(images)
-        student_features: dict[str, Tensor] = self.student_model(images)
+        teacher_features:  Tensor = self.teacher_model(images)
+        student_features: Tensor = self.student_model(images)
         if self.training:
             output = teacher_features, student_features
         else:
