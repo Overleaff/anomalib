@@ -94,7 +94,7 @@ class StfpmLightning(Stfpm):
         super().__init__(
             input_size=hparams.model.input_size,
             backbone=hparams.model.backbone,
-            layers=hparams.model.layers,
+
         )
         self.hparams: DictConfig | ListConfig  # type: ignore
         self.save_hyperparameters(hparams)
