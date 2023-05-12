@@ -43,10 +43,9 @@ class TimmFeatureExtractor(nn.Module):
             [torch.Size([32, 64, 64, 64]), torch.Size([32, 128, 32, 32]), torch.Size([32, 256, 16, 16])]
     """
 
-    def __init__(self, backbone: str, layers: list[str], pre_trained: bool = True, requires_grad: bool = False):
+    def __init__(self, backbone: str, pre_trained: bool = True, requires_grad: bool = False):
         super().__init__()
         self.backbone = backbone
-        self.layers = layers
         self.idx = self._map_layer_to_idx()
         self.requires_grad = requires_grad
         self.feature_extractor = timm.create_model(
@@ -55,9 +54,10 @@ class TimmFeatureExtractor(nn.Module):
             features_only=True,
             exportable=True,
             out_indices=self.idx,
+            num_classes=0,
         )
         self.out_dims = self.feature_extractor.feature_info.channels()
-        self._features = {layer: torch.empty(0) for layer in self.layers}
+
 
     def _map_layer_to_idx(self, offset: int = 3) -> list[int]:
         """Maps set of layer names to indices of model.
@@ -85,7 +85,7 @@ class TimmFeatureExtractor(nn.Module):
 
         return idx
 
-    def forward(self, inputs: Tensor) -> dict[str, Tensor]:
+    def forward(self, inputs: Tensor) ->  Tensor:
         """Forward-pass input tensor into the CNN.
 
         Args:
@@ -95,11 +95,11 @@ class TimmFeatureExtractor(nn.Module):
             Feature map extracted from the CNN
         """
         if self.requires_grad:
-            features = dict(zip(self.layers, self.feature_extractor(inputs)))
+            features = self.feature_extractor(inputs)
         else:
             self.feature_extractor.eval()
             with torch.no_grad():
-                features = dict(zip(self.layers, self.feature_extractor(inputs)))
+                features = self.feature_extractor(inputs)
         return features
 
 
