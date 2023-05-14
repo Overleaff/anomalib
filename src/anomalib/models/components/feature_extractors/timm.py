@@ -46,7 +46,6 @@ class TimmFeatureExtractor(nn.Module):
     def __init__(self, backbone: str, pre_trained: bool = True, requires_grad: bool = False):
         super().__init__()
         self.backbone = backbone
-        self.idx = self._map_layer_to_idx()
         self.requires_grad = requires_grad
         self.feature_extractor = timm.create_model(
             backbone,
