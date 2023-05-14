@@ -52,7 +52,6 @@ class TimmFeatureExtractor(nn.Module):
             pretrained=pre_trained,
             features_only=True,
             exportable=True,
-            out_indices=self.idx,
             num_classes=0,
         )
         self.out_dims = self.feature_extractor.feature_info.channels()
