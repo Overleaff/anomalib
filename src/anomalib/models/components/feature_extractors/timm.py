@@ -54,7 +54,6 @@ class TimmFeatureExtractor(nn.Module):
             exportable=True,
 
         )
-        self.out_dims = self.feature_extractor.feature_info.channels()
 
 
     def _map_layer_to_idx(self, offset: int = 3) -> list[int]:
