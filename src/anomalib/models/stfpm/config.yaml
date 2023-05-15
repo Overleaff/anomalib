@@ -1,8 +1,8 @@
 dataset:
-  name: mvtec
-  format: mvtec
-  path: ./datasets/MVTec
-  category: bottle
+  name: visa
+  format: visa
+  path: ./datasets/Visa
+  category: Capsules
   task: segmentation
   train_batch_size: 32
   eval_batch_size: 32
