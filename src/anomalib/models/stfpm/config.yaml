@@ -2,7 +2,7 @@ dataset:
   name: visa
   format: visa
   path: ./datasets/Visa
-  category: Capsules
+  category: capsules
   task: segmentation
   train_batch_size: 32
   eval_batch_size: 32
