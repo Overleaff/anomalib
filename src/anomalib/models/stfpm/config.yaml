@@ -28,7 +28,7 @@ dataset:
 
 model:
   name: stfpm
-  backbone: vit_base_patch16_224.augreg2_in21k_ft_in1k
+  backbone: pvt_v2_b1
 
   lr: 0.4
   momentum: 0.9
