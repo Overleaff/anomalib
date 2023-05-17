@@ -92,11 +92,11 @@ class TimmFeatureExtractor(nn.Module):
             Feature map extracted from the CNN
         """
         if self.requires_grad:
-            features = self.feature_extractor.forward_features(inputs)
+            features = self.feature_extractor(inputs)
         else:
             self.feature_extractor.eval()
             with torch.no_grad():
-                features = self.feature_extractor.forward_features(inputs)
+                features = self.feature_extractor(inputs)
         return features
 
 

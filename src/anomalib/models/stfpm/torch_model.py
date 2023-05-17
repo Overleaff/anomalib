@@ -24,7 +24,7 @@ class STFPMModel(nn.Module):
     def __init__(
         self,
         input_size: tuple[int, int],
-        backbone: str = "vit_base_patch16_224.augreg2_in21k_ft_in1k",
+        backbone: str = "pvt_v2_b1",
     ) -> None:
         super().__init__()
         self.tiler: Tiler | None = None
