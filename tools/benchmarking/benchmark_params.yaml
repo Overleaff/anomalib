@@ -26,5 +26,4 @@ grid_search:
       - zipper
     image_size: [224]
   model_name:
-    - padim
-    - patchcore
+    - stfpm
