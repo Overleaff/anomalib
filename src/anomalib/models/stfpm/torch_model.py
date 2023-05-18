@@ -30,9 +30,11 @@ class STFPMModel(nn.Module):
         self.tiler: Tiler | None = None
 
         self.backbone = backbone
-        self.teacher_model = FeatureExtractor(backbone=self.backbone, pre_trained=True,)
+        self.teacher_model = FeatureExtractor(backbone=self.backbone, pre_trained=True,    features_only=True,
+)
         self.student_model = FeatureExtractor(
-            backbone=self.backbone, pre_trained=False, requires_grad=True,
+            backbone=self.backbone, pre_trained=False, requires_grad=True,    features_only=True,
+
         )
 
         # teacher model is fixed
