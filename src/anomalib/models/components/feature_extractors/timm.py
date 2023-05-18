@@ -52,6 +52,8 @@ class TimmFeatureExtractor(nn.Module):
             pretrained=pre_trained,
             num_classes=0,
             exportable=True,
+                features_only=True,
+
 
         )
 
