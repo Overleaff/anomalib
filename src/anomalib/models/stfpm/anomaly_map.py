@@ -52,8 +52,8 @@ class AnomalyMapGenerator(nn.Module):
         layer_num =1
         anomaly_map = torch.ones(layer_num, 1, self.image_size[0], self.image_size[1])
 
-        for i in range(1):
-            layer_map = self.compute_layer_map(teacher_features[i+2], student_features[i+2])
+        for i in range(3):
+            layer_map = self.compute_layer_map(teacher_features[i], student_features[i])
             anomaly_map = anomaly_map.to(layer_map.device)
             anomaly_map *= layer_map
 
