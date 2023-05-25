@@ -2,7 +2,7 @@ dataset:
   name: visa
   format: visa
   path: ./datasets/VisA
-  category: chewing_gum
+  category: chewinggum
   task: segmentation
   train_batch_size: 1
   eval_batch_size: 1
