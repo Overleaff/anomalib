@@ -30,7 +30,7 @@ model:
   name: stfpm
   backbone: pvt_v2_b1
 
-  lr: 0.4
+  lr: 0.35
   momentum: 0.9
   weight_decay: 0.0001
   early_stopping:
@@ -46,6 +46,7 @@ metrics:
   pixel:
     - F1Score
     - AUROC
+    - AUPRO
   threshold:
     method: adaptive #options: [adaptive, manual]
     manual_image: null
