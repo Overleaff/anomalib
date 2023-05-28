@@ -57,8 +57,8 @@ class Stfpm(AnomalyModule):
         del args, kwargs  # These variables are not used.
 
         self.model.teacher_model.eval()
-        teacher_features, student_features = self.model(batch["image"])
-        loss = self.loss(teacher_features, student_features)
+        teacher_features, student_features, s_imagenet_out = self.model(batch["image"])
+        loss = self.loss(teacher_features, student_features, s_imagenet_out)
         self.log("train_loss", loss.item(), on_epoch=True, prog_bar=True, logger=True)
         return {"loss": loss}
 

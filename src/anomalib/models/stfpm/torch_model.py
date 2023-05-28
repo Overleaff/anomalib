@@ -6,10 +6,15 @@
 from __future__ import annotations
 
 from torch import Tensor, nn
+import torch
 
 from anomalib.models.components import FeatureExtractor
 from anomalib.models.stfpm.anomaly_map import AnomalyMapGenerator
 from anomalib.pre_processing import Tiler
+from anomalib.models.stfpm.imagenet import ImageNetDataset
+from torch.utils.data import Dataset, DataLoader
+from torchvision import transforms
+from itertools import cycle
 
 
 class STFPMModel(nn.Module):
@@ -36,6 +41,14 @@ class STFPMModel(nn.Module):
             backbone=self.backbone, pre_trained=False, requires_grad=True,    
 
         )
+        
+        
+        self.data_transforms_imagenet = transforms.Compose([ #We obtain an image P ∈ R 3×256×256 from ImageNet by choosing a random image,
+                        transforms.Resize((512, 512)), #resizing it to 512 × 512,
+                        transforms.RandomGrayscale(p=0.3), #converting it to gray scale with a probability of 0.3
+                        transforms.CenterCrop((256,256)), # and cropping the center 256 × 256 pixels
+                        transforms.ToTensor(),
+                        ])
 
         # teacher model is fixed
         for parameters in self.teacher_model.parameters():
@@ -65,8 +78,21 @@ class STFPMModel(nn.Module):
             images = self.tiler.tile(images)
         teacher_features:  Tensor = self.teacher_model(images)
         student_features: Tensor = self.student_model(images)
+        
+        
+        imagenet = ImageNetDataset(imagenet_dir="/content/tiny-imagenet-200/tiny-imagenet-200/train",transform=self.data_transforms_imagenet)
+        imagenet_loader = DataLoader(imagenet,batch_size=32,shuffle=True)
+        # len_traindata = len(dataset)
+        imagenet_iterator = cycle(iter(imagenet_loader))
+
+        # Choose a random pretraining image P ∈ R 3×256×256 from ImageNet [54]
+        image_p = next(imagenet_iterator)
+        # pdb.set_trace()
+        s_imagenet_out: dict[str, Tensor] = self.student_model(image_p[0].cuda())
+        
+        
         if self.training:
-            output = teacher_features, student_features
+            output = teacher_features, student_features, s_imagenet_out
         else:
             output = self.anomaly_map_generator(teacher_features=teacher_features, student_features=student_features)
             if self.tiler:

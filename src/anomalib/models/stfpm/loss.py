@@ -8,6 +8,7 @@ from __future__ import annotations
 import torch
 import torch.nn.functional as F
 from torch import Tensor, nn
+import numpy as np
 
 
 class STFPMLoss(nn.Module):
@@ -34,7 +35,7 @@ class STFPMLoss(nn.Module):
         super().__init__()
         self.mse_loss = nn.MSELoss(reduction="sum")
 
-    def compute_layer_loss(self, teacher_feats: Tensor, student_feats: Tensor) -> Tensor:
+    def compute_layer_loss(self, teacher_feats: Tensor, student_feats: Tensor, s_imagenet_out: Tensor) -> Tensor:
         """Compute layer loss based on Equation (1) in Section 3.2 of the paper.
 
         Args:
@@ -51,9 +52,12 @@ class STFPMLoss(nn.Module):
         norm_student_features = F.normalize(student_feats)
         layer_loss = (0.5 / (width * height)) * self.mse_loss(norm_teacher_features, norm_student_features)
 
+        N : dict[str, float]= torch.mean(torch.pow(s_imagenet_out,2))
+        
+        layer_loss = torch.mean(layer_loss) + N
         return layer_loss
 
-    def forward(self, teacher_features:  Tensor, student_features:  Tensor) -> Tensor:
+    def forward(self, teacher_features:  Tensor, student_features:  Tensor, imagenet_params: dict[str, float]) -> Tensor:
         """Compute the overall loss via the weighted average of the layer losses computed by the cosine similarity.
 
         Args:
@@ -66,7 +70,7 @@ class STFPMLoss(nn.Module):
 
         layer_losses: list[Tensor] = []
         for i in range(2):
-            loss = self.compute_layer_loss(teacher_features[i+1], student_features[i+1])
+            loss = self.compute_layer_loss(teacher_features[i+1], student_features[i+1], imagenet_params[i+1])
             layer_losses.append(loss)
 
         total_loss = torch.stack(layer_losses).sum()
