@@ -35,7 +35,7 @@ model:
   weight_decay: 0.0001
   early_stopping:
     patience: 5
-    metric: pixel_AUROC
+    metric: image_AUROC
     mode: max
   normalization_method: min_max # options: [null, min_max, cdf]
 
