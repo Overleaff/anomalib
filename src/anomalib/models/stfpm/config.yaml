@@ -2,7 +2,7 @@ dataset:
   name: mvtec
   format: mvtec
   path: ./datasets/MVTec
-  category: bottle
+  category: cable
   task: segmentation
   train_batch_size: 32
   eval_batch_size: 32
@@ -49,6 +49,7 @@ metrics:
   pixel:
     - F1Score
     - AUROC
+    - AUPRO
   threshold:
     method: adaptive #options: [adaptive, manual]
     manual_image: null
