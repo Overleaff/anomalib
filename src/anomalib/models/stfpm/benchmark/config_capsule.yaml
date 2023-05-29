@@ -30,7 +30,7 @@ model:
   name: stfpm
   backbone: pvt_v2_b1
 
-  lr: 0.35
+  lr: 0.9
   momentum: 0.9
   weight_decay: 0.0001
   early_stopping:
