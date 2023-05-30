@@ -34,7 +34,7 @@ model:
   momentum: 0.9
   weight_decay: 0.0001
   early_stopping:
-    patience: 5
+    patience: 3s
     metric: pixel_AUROC
     mode: max
   normalization_method: min_max # options: [null, min_max, cdf]
