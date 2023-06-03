@@ -2,7 +2,7 @@ dataset:
   name: mvtec
   format: mvtec
   path: ./datasets/MVTec
-  category: cable
+  category: grid
   task: segmentation
   train_batch_size: 1
   eval_batch_size: 1
