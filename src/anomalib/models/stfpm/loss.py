@@ -65,8 +65,8 @@ class STFPMLoss(nn.Module):
         """
 
         layer_losses: list[Tensor] = []
-        for i in range(2):
-            loss = self.compute_layer_loss(teacher_features[i+1], student_features[i+1])
+        for i in range(1):
+            loss = self.compute_layer_loss(teacher_features[i+3], student_features[i+3])
             layer_losses.append(loss)
 
         total_loss = torch.stack(layer_losses).sum()
