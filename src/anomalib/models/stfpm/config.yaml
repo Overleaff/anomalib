@@ -1,8 +1,8 @@
 dataset:
   name: visa
   format: visa
-  path: ./datasets/Visa
-  category: capsules
+  path: ./datasets/VisA
+  category: pcb1
   task: segmentation
   train_batch_size: 32
   eval_batch_size: 32
@@ -49,6 +49,7 @@ metrics:
   pixel:
     - F1Score
     - AUROC
+    - AUPRO
   threshold:
     method: adaptive #options: [adaptive, manual]
     manual_image: null
