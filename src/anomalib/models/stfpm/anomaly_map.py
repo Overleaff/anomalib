@@ -54,7 +54,7 @@ class AnomalyMapGenerator(nn.Module):
         for i in range(2):
             layer_map = self.compute_layer_map(teacher_features[i+1], student_features[i+1])
             anomaly_map = anomaly_map.to(layer_map.device)
-            anomaly_map *= layer_map
+            anomaly_map += layer_map
 
         return anomaly_map
 
