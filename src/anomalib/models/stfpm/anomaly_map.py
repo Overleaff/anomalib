@@ -48,13 +48,13 @@ class AnomalyMapGenerator(nn.Module):
         Returns:
           Final anomaly map
         """
-        batch_size = 16
+        batch_size = 8
         anomaly_map = torch.ones(batch_size, 1, self.image_size[0], self.image_size[1])
 
         for i in range(2):
             layer_map = self.compute_layer_map(teacher_features[i+1], student_features[i+1])
             anomaly_map = anomaly_map.to(layer_map.device)
-            anomaly_map += layer_map
+            anomaly_map *= layer_map
 
         return anomaly_map
 
