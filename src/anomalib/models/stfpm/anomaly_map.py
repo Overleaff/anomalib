@@ -48,7 +48,7 @@ class AnomalyMapGenerator(nn.Module):
         Returns:
           Final anomaly map
         """
-        batch_size = 8
+        batch_size = 1
         anomaly_map = torch.ones(batch_size, 1, self.image_size[0], self.image_size[1])
 
         for i in range(2):
