@@ -54,7 +54,7 @@ class STFPMLoss(nn.Module):
 
         N : dict[str, float]= torch.mean(torch.pow(s_imagenet_out,2))
         
-        layer_loss = torch.mean(layer_loss) + 0.7*N
+        layer_loss = torch.mean(layer_loss) + 0.01*N
         return layer_loss
 
     def forward(self, teacher_features:  Tensor, student_features:  Tensor, imagenet_params: dict[str, float]) -> Tensor:
