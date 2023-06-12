@@ -30,11 +30,11 @@ model:
   name: stfpm
   backbone: pvt_v2_b1
 
-  lr: 0.08
+  lr: 0.4
   momentum: 0.9
   weight_decay: 0.0001
   early_stopping:
-    patience: 3
+    patience: 5
     metric: pixel_AUROC
     mode: max
   normalization_method: min_max # options: [null, min_max, cdf]
