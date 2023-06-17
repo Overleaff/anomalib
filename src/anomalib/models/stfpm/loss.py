@@ -47,9 +47,10 @@ class STFPMLoss(nn.Module):
 
         height, width = teacher_feats.shape[2:]
 
-        norm_teacher_features = F.normalize(teacher_feats)
-        norm_student_features = F.normalize(student_feats)
-        layer_loss = (0.5 / (width * height)) * self.mse_loss(norm_teacher_features, norm_student_features)
+        # norm_teacher_features = F.normalize(teacher_feats)
+        # norm_student_features = F.normalize(student_feats)
+        # layer_loss = (0.5 / (width * height)) * self.mse_loss(norm_teacher_features, norm_student_features)
+        layer_loss = (0.5 / (width * height)) * self.mse_loss(teacher_feats, student_feats)
 
         return layer_loss
 
