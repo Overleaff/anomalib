@@ -29,10 +29,11 @@ class AnomalyMapGenerator(nn.Module):
         Returns:
           Anomaly score based on cosine similarity.
         """
-        norm_teacher_features = F.normalize(teacher_features)
-        norm_student_features = F.normalize(student_features)
+        # norm_teacher_features = F.normalize(teacher_features)
+        # norm_student_features = F.normalize(student_features)
 
-        layer_map = 0.5 * torch.norm(norm_teacher_features - norm_student_features, p=2, dim=-3, keepdim=True) ** 2
+        # layer_map = 0.5 * torch.norm(norm_teacher_features - norm_student_features, p=2, dim=-3, keepdim=True) ** 2
+        layer_map = 0.5 * torch.norm(teacher_features - student_features, p=2, dim=-3, keepdim=True) ** 2
         layer_map = F.interpolate(layer_map, size=self.image_size, align_corners=False, mode="bilinear")
         return layer_map
 
@@ -48,7 +49,7 @@ class AnomalyMapGenerator(nn.Module):
         Returns:
           Final anomaly map
         """
-        batch_size = 6
+        batch_size = 8
         anomaly_map = torch.ones(batch_size, 1, self.image_size[0], self.image_size[1])
 
         for i in range(2):
