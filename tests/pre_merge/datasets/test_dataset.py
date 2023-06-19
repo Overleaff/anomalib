@@ -47,7 +47,7 @@ class TestAnomalibDataset:
         """Test the random subset splitting."""
 
         # subset splitting
-        subsets = random_split(folder_dataset, [0.4, 0.35, 0.25])
+        subsets = random_split(folder_dataset, [0.4, 0.4, 0.25])
         # check if subset splitting has been performed correctly
         assert len(subsets) == 3
         # reconstruct the original dataset by concatenating the subsets
