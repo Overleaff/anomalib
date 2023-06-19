@@ -4,9 +4,9 @@ dataset:
   path: ./datasets/MVTec
   category: zipper
   task: segmentation
-  train_batch_size: 8
-  eval_batch_size: 8
-  inference_batch_size: 8
+  train_batch_size: 32
+  eval_batch_size: 32
+  inference_batch_size: 32
   num_workers: 8
   image_size: 224 # dimensions to which images are resized (mandatory)
   center_crop: null # dimensions to which images are center-cropped after resizing (optional)
