@@ -81,7 +81,7 @@ class STFPMModel(nn.Module):
         
         
         imagenet = ImageNetDataset(imagenet_dir="/content/tiny-imagenet-200/tiny-imagenet-200/train",transform=self.data_transforms_imagenet)
-        imagenet_loader = DataLoader(imagenet,batch_size=1,shuffle=True)
+        imagenet_loader = DataLoader(imagenet,batch_size=2,shuffle=True)
         # len_traindata = len(dataset)
         imagenet_iterator = cycle(iter(imagenet_loader))
 

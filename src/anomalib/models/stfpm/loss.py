@@ -50,11 +50,12 @@ class STFPMLoss(nn.Module):
 
         norm_teacher_features = F.normalize(teacher_feats)
         norm_student_features = F.normalize(student_feats)
+        norm_triplet_features = F.normalize(s_imagenet_out)
         layer_loss = (0.5 / (width * height)) * self.mse_loss(norm_teacher_features, norm_student_features)
 
-        N : dict[str, float]= torch.mean(torch.pow(s_imagenet_out,2))
+        triplet_loss = (0.5 / (width * height)) * self.mse_loss(norm_student_features, norm_triplet_features)
         
-        layer_loss = torch.mean(layer_loss) + 0.05*N
+        layer_loss = torch.mean(layer_loss) - 0.1*torch.mean(triplet_loss)
         return layer_loss
 
     def forward(self, teacher_features:  Tensor, student_features:  Tensor, imagenet_params: dict[str, float]) -> Tensor:
