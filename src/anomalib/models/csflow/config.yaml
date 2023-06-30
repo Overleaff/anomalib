@@ -30,7 +30,7 @@ model:
   clamp: 3
   cross_conv_hidden_channels: 1024
   early_stopping:
-    patience: 3
+    patience: 5
     metric: pixel_AUROC
     mode: max
   eps: 1e-04 # Adam epsilon

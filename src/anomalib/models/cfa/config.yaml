@@ -31,7 +31,7 @@ model:
   weight_decay: 5e-4
   amsgrad: true
   early_stopping:
-    patience: 3
+    patience: 5
     metric: pixel_AUROC
     mode: max
   normalization_method: min_max # options: [null, min_max, cdf]
