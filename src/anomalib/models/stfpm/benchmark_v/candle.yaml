@@ -4,9 +4,9 @@ dataset:
   path: ./datasets/VisA
   category: candle
   task: segmentation
-  train_batch_size: 1
-  eval_batch_size: 1
-  inference_batch_size: 1
+  train_batch_size: 2
+  eval_batch_size: 2
+  inference_batch_size: 2
   num_workers: 8
   image_size: 224 # dimensions to which images are resized (mandatory)
   center_crop: null # dimensions to which images are center-cropped after resizing (optional)
