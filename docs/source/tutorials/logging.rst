@@ -40,7 +40,7 @@ Anomalib allows you to save predictions to the file system by setting ``log_imag
     save_images: False # save images to the file system
     log_images: True # log images to the available loggers (if any)
     image_save_path: null # path to which images will be saved
-    mode: full # options: ["full", "simple"]
+    mode: simple # options: ["full", "simple"]
 
   logging:
     logger: [comet, tensorboard, wandb]

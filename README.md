@@ -252,7 +252,7 @@ Below is an example of how to enable logging for hyper-parameters, metrics, mode
 ```yaml
 visualization:
   log_images: True # log images to the available loggers (if any)
-  mode: full # options: ["full", "simple"]
+  mode: simple # options: ["full", "simple"]
 
  logging:
   logger: [comet, tensorboard, wandb]
