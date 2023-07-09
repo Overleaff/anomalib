@@ -36,7 +36,7 @@ model:
     - layer2
     - layer3
   early_stopping:
-    patience: 5
+    patience: 3
     metric: pixel_AUROC
     mode: max
   beta1: 0.5
