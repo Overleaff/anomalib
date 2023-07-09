@@ -204,7 +204,7 @@ class Visualizer:
             visualization = mark_boundaries(
                 image_result.heat_map, image_result.pred_mask, color=(1, 0, 0), mode="thick"
             )
-            return (visualization * 255).astype(np.uint8)
+            return image_result.heat_map
         if self.task == TaskType.CLASSIFICATION:
             if image_result.pred_label:
                 image_classified = add_anomalous_label(image_result.image, image_result.pred_score)
