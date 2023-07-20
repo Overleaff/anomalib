@@ -2,7 +2,7 @@ dataset:
   name: visa
   format: visa
   path: ./datasets/VisA
-  category: pcb1
+  category: cashew
   task: segmentation
   train_batch_size: 32
   eval_batch_size: 32
@@ -60,7 +60,7 @@ visualization:
   save_images: True # save images to the file system
   log_images: True # log images to the available loggers (if any)
   image_save_path: null # path to which images will be saved
-  mode: full # options: ["full", "simple"]
+  mode: simple # options: ["full", "simple"]
 
 project:
   seed: 0
