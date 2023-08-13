@@ -1,12 +1,12 @@
 dataset:
-  name: mvtec
-  format: mvtec
-  path: ./datasets/MVTec
-  category: cable
+  name: visa
+  format: visa
+  path: ./datasets/VisA
+  category: fryum
   task: segmentation
-  train_batch_size: 1
-  eval_batch_size: 1
-  inference_batch_size: 1
+  train_batch_size: 2
+  eval_batch_size: 2
+  inference_batch_size: 2
   num_workers: 8
   image_size: 224 # dimensions to which images are resized (mandatory)
   center_crop: null # dimensions to which images are center-cropped after resizing (optional)
@@ -34,8 +34,8 @@ model:
   momentum: 0.9
   weight_decay: 0.0001
   early_stopping:
-    patience: 4
-    metric: pixel_AUROC
+    patience: 3
+    metric: train_loss_epoch
     mode: max
   normalization_method: min_max # options: [null, min_max, cdf]
 
@@ -64,7 +64,7 @@ project:
   path: ./results
 
 logging:
-  logger: [tensorboard] # options: [comet, tensorboard, wandb, csv] or combinations.
+  logger: [] # options: [comet, tensorboard, wandb, csv] or combinations.
   log_graph: false # Logs the model graph to respective logger.
 
 optimization:
